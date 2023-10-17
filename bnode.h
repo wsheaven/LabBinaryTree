@@ -35,10 +35,9 @@ public:
    // 
    // Construct
    //
-   BNode()
+   BNode() : data(0), pLeft(nullptr), pRight(nullptr), pParent(nullptr)
    {
-      pLeft = pRight = pParent = nullptr;
-      data = 0; 
+     
    }
    BNode(const T& t) : data(t), pLeft(nullptr), pRight(nullptr), pParent(nullptr)
    {
@@ -83,7 +82,11 @@ inline size_t size(const BNode <T> * p)
 template <class T>
 inline void addLeft(BNode <T> * pNode, BNode <T> * pAdd)
 {
-   pNode->pLeft = pAdd->pLeft; 
+   if (pAdd != nullptr)
+   {
+      pAdd->pParent = pNode; 
+   }
+   pNode->pLeft = pAdd; 
 }
 
 /******************************************************
@@ -93,7 +96,11 @@ inline void addLeft(BNode <T> * pNode, BNode <T> * pAdd)
 template <class T>
 inline void addRight (BNode <T> * pNode, BNode <T> * pAdd)
 {
-   pNode->pRight = pAdd->pRight;
+   if (pAdd != nullptr)
+   {
+      pAdd->pParent = pNode;
+   }
+   pNode->pRight = pAdd;
 }
 
 /******************************************************
@@ -103,13 +110,18 @@ inline void addRight (BNode <T> * pNode, BNode <T> * pAdd)
 template <class T>
 inline void addLeft (BNode <T> * pNode, const T & t)
 {
-   pNode->pLeft = new BNode<T>(t); 
+   BNode<T>* pAdd = new BNode<T>(t); 
+   pAdd->pParent = pNode;
+   pNode->pLeft = pAdd; 
+
 }
 
 template <class T>
 inline void addLeft(BNode <T>* pNode, T && t)
 {
-   pNode->pLeft = new BNode<T>(t);
+   BNode<T>* pAdd = new BNode<T>(t);
+   pAdd->pParent = pNode;
+   pNode->pLeft = pAdd;
 }
 
 /******************************************************
@@ -119,13 +131,17 @@ inline void addLeft(BNode <T>* pNode, T && t)
 template <class T>
 void addRight (BNode <T> * pNode, const T & t)
 {
-   pNode->pRight = new BNode<T>(t);
+   BNode<T>* pAdd = new BNode<T>(t);
+   pAdd->pParent = pNode;
+   pNode->pRight = pAdd;
 }
 
 template <class T>
 void addRight(BNode <T>* pNode, T && t)
 {
-   pNode->pRight = new BNode<T>(t);
+   BNode<T>* pAdd = new BNode<T>(t);
+   pAdd->pParent = pNode;
+   pNode->pRight = pAdd;
 }
 
 /*****************************************************
@@ -196,5 +212,20 @@ BNode <T> * copy(const BNode <T> * pSrc)
 template <class T>
 void assign(BNode <T> * & pDest, const BNode <T>* pSrc)
 {
+   if (pSrc == nullptr)
+   {
+      clear(pDest);
+      return;
+   }
 
+   if (pDest == nullptr)
+   {
+      pDest = new BNode<T>(pSrc->data); 
+   }
+
+    pDest->data = pSrc->data; 
+    assign(pDest->pRight, pSrc->pRight);
+    assign(pDest->pLeft, pSrc->pLeft);
+      
+   
 }
