@@ -26,7 +26,7 @@ public:
    void run()
    {
       reset();
-
+      
       // Construct
       test_construct_default();
       test_constructValue_copy();
@@ -34,7 +34,7 @@ public:
       test_copy_nullptr();
       test_copy_one();
       test_copy_standard();
-
+      
       // Assign
       test_assign_emptyToEmpty();
       test_assign_standardToEmpty();
@@ -60,17 +60,17 @@ public:
       test_addLeft_standardTree();
       test_addRight_oneTree();
       test_addRight_standardTree();
-
+      
       // Remove
       test_clear_empty();
       test_clear_one();
       test_clear_standard();
-
+      
       // Status
       test_size_empty();
       test_size_one();
       test_size_standard();
-
+     
       report("BNode");
    }
 
